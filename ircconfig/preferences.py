@@ -49,7 +49,7 @@ class Preferences(object):
 		default: Any = None,
 		channel: str = None):
 
-		if channel and channel in self.database.keys():
+		if channel and channel in self.database.keys() and key in self.database[channel]:
 			target = channel
 		else:
 			target = "global"
