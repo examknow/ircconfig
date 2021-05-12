@@ -49,8 +49,10 @@ class Preferences(object):
 		default: Any = None,
 		channel: str = None):
 
-		if channel and channel in self.database.keys() and key in self.database[channel]:
-			target = channel
+		key = lower(key)
+
+		if channel and lower(channel) in self.database.keys() and key in self.database[channel]:
+			target = lower(channel)
 		else:
 			target = "global"
 
@@ -66,11 +68,13 @@ class Preferences(object):
 		value: str,
 		channel: str = None):
 
+		key = lower(key)
+
 		if not key in self.defaults.keys():
 			raise KeyError(f"{key} is not a valid preference")
 
 		if channel:
-			target = channel
+			target = lower(channel)
 		else:
 			target = "global"
 
