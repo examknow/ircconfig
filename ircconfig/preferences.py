@@ -49,10 +49,10 @@ class Preferences(object):
 		default: Any = None,
 		channel: str = None):
 
-		key = lower(key)
+		key = key.lower()
 
-		if channel and lower(channel) in self.database.keys() and key in self.database[channel]:
-			target = lower(channel)
+		if channel and channel.lower() in self.database.keys() and key in self.database[channel]:
+			target = channel.lower()
 		else:
 			target = "global"
 
@@ -68,18 +68,19 @@ class Preferences(object):
 		value: str,
 		channel: str = None):
 
-		key = lower(key)
+		key = key.lower()
 
 		if not key in self.defaults.keys():
 			raise KeyError(f"{key} is not a valid preference")
 
 		if channel:
-			target = lower(channel)
+			target = channel.lower()
 		else:
 			target = "global"
 
 		if not target in self.database.keys():
 			self.database[target] = {}
-		self.database[target][key] = value
+        # this is gross
+		self.database[target][key] = self.defaults[key].parse(self.getPreference(key, default=set(), channel=target), value)
 
 		self._write()
