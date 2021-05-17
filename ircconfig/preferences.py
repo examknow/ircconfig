@@ -17,9 +17,9 @@ class Preferences(object):
                 self._write()
 
         def _defaults(self):
-                self.database = {
+            self.database = {
                 "global": {
-                        k: v.default for k, v in self.defaults.items()
+                    k: v.default for k, v in self.defaults.items()
                 }
             }
 
@@ -29,14 +29,14 @@ class Preferences(object):
                     database = json.loads(db_file.read())
 
             for t in database.keys():
-                    self.database[t].update({
-                            k: self.defaults[k].deserialize(v) for k,v in database[t].items()
-                    })
+                self.database[t].update({
+                    k: self.defaults[k].deserialize(v) for k,v in database[t].items()
+                })
 
         def _write(self):
             database_serialized = {
                 t: {
-                        k: self.defaults[k].serialize(v) for k,v in self.database[t].items()
+                    k: self.defaults[k].serialize(v) for k,v in self.database[t].items()
                 } for t in self.database.keys()
             }
             data = json.dumps(database_serialized, indent=4, sort_keys=True)
@@ -51,14 +51,13 @@ class Preferences(object):
                 key = key.lower()
 
                 if channel and channel.lower() in self.database.keys() and key in self.database[channel]:
-                        target = channel.lower()
+                    target = channel.lower()
                 else:
-                        target = "global"
-
+                    target = "global"
                 try:
-                        value = self.database[target][key]
+                    value = self.database[target][key]
                 except KeyError:
-                        value = default
+                    value = default
 
                 return value
 
@@ -70,15 +69,15 @@ class Preferences(object):
                 key = key.lower()
 
                 if not key in self.defaults.keys():
-                        raise KeyError(f"{key} is not a valid preference")
+                    raise KeyError(f"{key} is not a valid preference")
 
                 if channel:
-                        target = channel.lower()
+                    target = channel.lower()
                 else:
-                        target = "global"
+                    target = "global"
 
                 if not target in self.database.keys():
-                        self.database[target] = {}
+                    self.database[target] = {}
                 # this is gross
                 self.database[target][key] = self.defaults[key].parse(self.getPreference(key, default=set(), channel=target), value)
 
