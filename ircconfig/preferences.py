@@ -82,3 +82,23 @@ class Preferences(object):
                 self.database[target][key] = self.defaults[key].parse(self.getPreference(key, default=set(), channel=target), value)
 
                 self._write()
+
+        def unsetPreference(self,
+                key: str,
+                channel: str = None):
+
+                key = key.lower()
+
+                if not key in self.defaults.keys():
+                    raise KeyError(f"{key} is not a valid preference")
+
+                if channel:
+                    target = channel.lower()
+                else:
+                    target = "global"
+
+                if not target in self.database.keys():
+                    self.database[target] = {}
+                self.database[target][key] = self.defaults[key].default
+
+                self._write()
