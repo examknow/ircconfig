@@ -28,10 +28,10 @@ class Preferences(object):
                 with open(self.file) as db_file:
                     database = json.loads(db_file.read())
 
-            for t in database.keys():
-                self.database[t].update({
-                    k: self.defaults[k].deserialize(v) for k,v in database[t].items()
-                })
+                for t in database.keys():
+                    self.database[t].update({
+                        k: self.defaults[k].deserialize(v) for k,v in database[t].items()
+                    })
 
         def _write(self):
             database_serialized = {
